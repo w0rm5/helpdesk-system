@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>User Registration</title>
+		<link th:rel="stylesheet" th:href = "@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" th:href="@{/}">Home</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav">
+						<a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+						<a class="nav-link" href="#" sec:authorize="hasRole('ROLE_ADMIN')">Features</a>
+						<a class="nav-link" href="#" sec:authorize="hasRole('ROLE_USER')">Pricing</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	
+		<div class="container">
+			<h1>User Registration</h1>
+		    <form class="row mb-2" th:action="@{/registration}" method="post" th:object="${newUser}">
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="firstName">First Name</label>
+				<input class="form-control" type="text" id="firstName" name="firstName" th:field="*{firstName}" required autofocus="autofocus" />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="lastName">Last Name</label>
+				<input class="form-control" type="text" id="lastName" name="lastName" th:field="*{lastName}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="gender">Gender</label>
+				<select class="form-select" id="gender" name="gender" th:field="*{gender}" required>
+					<option value="Male" selected>Male</option>
+					<option value="Female">Female</option>
+				</select>
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="dateOfBirth">Date of Birth</label>
+				<input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}" required/>
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="placeOfBirth">Place of Birth</label>
+				<input class="form-control" type="text" id="placeOfBirth" name="placeOfBirth" th:field="*{placeOfBirth}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="currentAddress">Current Address</label>
+				<input class="form-control" type="text" id="currentAddress" name="currentAddress" th:field="*{currentAddress}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="phone">Phone Number</label>
+				<input class="form-control" type="text" id="phone" name="phone" th:field="*{phone}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="unit">Unit</label>
+				<input class="form-control" type="text" id="unit" name="unit" th:field="*{unit}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="position">Position</label>
+				<input class="form-control" type="text" id="position" name="position" th:field="*{position}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="userId">ID</label>
+				<input class="form-control" type="text" id="userId" name="userId" th:field="*{userId}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="email">Email</label>
+				<input class="form-control" type="text" id="email" name="email" th:field="*{email}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="password">Password</label>
+				<input class="form-control" type="password" id="password" name="password" />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label pr-2" for="role">Role:</label>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="role" id="role_user" value="ROLE_USER" checked>
+					<label class="form-check-label" for="flexRadioDefault1">
+						User
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="role" id="role_helper" value="ROLE_HELPER">
+					<label class="form-check-label" for="flexRadioDefault2">
+						Helper
+					</label>
+				</div>
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<input class="btn btn-primary" type="submit" value="Register"/>
+				<span>Already have an account? <a th:href="@{/login}">Log in</a></span>
+		    </div>
+		    </form>
+		</div>
+	</body>
+</html>
