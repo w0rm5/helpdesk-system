@@ -13,11 +13,12 @@ public class UserRegistrationDto {
 	private String position;
 	private String unit;
 	private String password;
+	private String confirmPassword;
 	private String role;
 	
 	public UserRegistrationDto(String firstName, String lastName, String gender, String dateOfBirth,
 			String placeOfBirth, String currentAddress, String phone, String email, String userId, String position,
-			String unit, String password, String role) {
+			String unit, String password, String confirmPassword, String role) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -31,6 +32,7 @@ public class UserRegistrationDto {
 		this.position = position;
 		this.unit = unit;
 		this.password = password;
+		this.confirmPassword = confirmPassword;
 		this.role = role;
 	}
 	
@@ -132,6 +134,14 @@ public class UserRegistrationDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 	public String getRole() {

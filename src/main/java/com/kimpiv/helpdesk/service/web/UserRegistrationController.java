@@ -1,7 +1,7 @@
 package com.kimpiv.helpdesk.service.web;
 
 import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,22 +21,24 @@ public class UserRegistrationController {
 		this.userService = userService;
 	}
 	
-	@ModelAttribute("newUser") 
-	public UserRegistrationDto userRegistrationDto() {
-		return new UserRegistrationDto();
-	}
+//	@ModelAttribute("newUser") 
+//	public UserRegistrationDto userRegistrationDto() {
+//		return new UserRegistrationDto();
+//	}
 	
 	@GetMapping
-	public String getRegistrationForm() {
-//	public String getRegistrationForm(Model model) {
-//		model.addAttribute("newUser", new UserRegistrationDto());
+//	public String getRegistrationForm() {
+	public String getRegistrationForm(Model model) {
+		model.addAttribute("newUser", new UserRegistrationDto());
 		return "registration";
 	}
 	
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		
-		userService.save(registrationDto);
-		return "redirect:/login?regsuccess=true";
+		if(!registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
+			return "redirect:/registration?passworderror";
+		}
+		userService.saveUser(registrationDto);
+		return "redirect:/login?registrationsuccess";
 	}
 }

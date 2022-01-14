@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Error</title>
+		<link th:rel="stylesheet" th:href = "@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h2>Something went wrong</h2>
+					<a class="btn btn-primary btn-lg" th:href="@{/}">Go back home</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

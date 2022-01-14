@@ -28,6 +28,14 @@
 	
 		<div class="container">
 			<h1>User Registration</h1>
+			
+			<!-- error message -->
+		    <div th:if="${param.passworderror}" class="col-md-12 mb-2">
+				<div class="alert alert-danger">
+					Password do not match.
+				</div>
+		    </div>
+			    
 		    <form class="row mb-2" th:action="@{/registration}" method="post" th:object="${newUser}">
 		    <div class="col-md-6 mb-2">
 				<label class="form-label" for="firstName">First Name</label>
@@ -78,7 +86,11 @@
 		    </div>
 		    <div class="col-md-6 mb-2">
 				<label class="form-label" for="password">Password</label>
-				<input class="form-control" type="password" id="password" name="password" />
+				<input class="form-control" type="password" id="password" name="password" th:field="*{password}" required />
+		    </div>
+		    <div class="col-md-6 mb-2">
+				<label class="form-label" for="confirmPassword">Confirm Password</label>
+				<input class="form-control" type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" required />
 		    </div>
 		    <div class="col-md-6 mb-2">
 				<label class="form-label pr-2" for="role">Role:</label>

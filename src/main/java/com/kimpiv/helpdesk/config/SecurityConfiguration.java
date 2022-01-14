@@ -1,9 +1,8 @@
 package com.kimpiv.helpdesk.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,26 +16,28 @@ import com.kimpiv.helpdesk.service.UserService;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
-	@Autowired
 	private UserService userService;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+	public SecurityConfiguration(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		super();
+		this.userService = userService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-		auth.setUserDetailsService(userService);
-		auth.setPasswordEncoder(passwordEncoder());
-		return auth;
-	}
+//	@Bean
+//	public DaoAuthenticationProvider authenticationProvider() {
+//		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+//		auth.setUserDetailsService(userService);
+//		auth.setPasswordEncoder(bCryptPasswordEncoder);
+//		return auth;
+//	}
 	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider());
+//		auth.authenticationProvider(authenticationProvider());
+		auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override

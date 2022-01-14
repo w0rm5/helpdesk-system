@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Login</title>
+		<link th:rel="stylesheet" th:href = "@{/css/bootstrap.min.css}" />
+	</head>
+	<body>
+		<div class="container mt-4">
+			<h1>Login</h1>
+		    <form class="row mb-2" th:action="@{/login}" method="post">
+		    
+			    <!-- error message -->
+			    <div th:if="${param.error}" class="col-md-12 mb-2">
+					<div class="alert alert-danger">
+						Invalid username or password.
+					</div>
+			    </div>
+			    
+			    <!-- logout message -->
+			    <div th:if="${param.logout}" class="col-md-12 mb-2">
+					<div class="alert alert-info">
+						You have been logged out.
+					</div>
+			    </div>
+			    
+			    <div class="col-md-12 mb-2">
+					<label class="form-label" for="username">Email</label>
+					<input class="form-control" type="text" id="username" name="username" placeholder="Enter email" required />
+			    </div>
+			    <div class="col-md-12 mb-2">
+					<label class="form-label" for="password">Password</label>
+					<input class="form-control" type="password" id="password" name="password" placeholder="Enter password" required/>
+			    </div>
+	
+			    <div class="col-md-12 my-4">
+					<input class="btn btn-primary" type="submit" value="Log in"/>
+			    </div>
+			    <div class="col-md-12">
+					<span>Don't have an account? <a th:href="@{/registration}">Register</a></span>
+			    </div>
+		    </form>
+		</div>
+	</body>
+</html>
