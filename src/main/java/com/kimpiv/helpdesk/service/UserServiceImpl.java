@@ -22,9 +22,9 @@ import com.kimpiv.helpdesk.service.web.dto.UserRegistrationDto;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private UserRepository userRepository;
-	private RoleRepository roleRepository;
-	private BCryptPasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
+	private final BCryptPasswordEncoder passwordEncoder;
 	
 	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
 		super();

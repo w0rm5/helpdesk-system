@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Home</title>
+	<title>User List</title>
 	<link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 	<script th:src="@{js/bootstrap.bundle.js}"></script>
 </head>
@@ -55,7 +55,41 @@
 	</nav>
 
 	<div class="container">
-		<h1>Home</h1>
+		<h1>User List</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
+					<th scope="col">Gender</th>
+					<th scope="col">Date of Birth</th>
+					<th scope="col">Place of Birth</th>
+					<th scope="col">Current Address</th>
+					<th scope="col">Phone Number</th>
+					<th scope="col">Email</th>
+					<th scope="col">Unit</th>
+					<th scope="col">Position</th>
+					<th scope="col">User ID</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<th th:text="${user.id}" scope="row"></th>
+					<td th:text="${user.firstName}"></td>
+					<td th:text="${user.lastName}"></td>
+					<td th:text="${user.gender}"></td>
+					<td th:text="${user.dateOfBirth}"></td>
+					<td th:text="${user.placeOfBirth}"></td>
+					<td th:text="${user.currentAddress}"></td>
+					<td th:text="${user.phone}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:text="${user.unit}"></td>
+					<td th:text="${user.position}"></td>
+					<td th:text="${user.userId}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 

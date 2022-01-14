@@ -8,4 +8,5 @@ import com.kimpiv.helpdesk.model.UserInfo;
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	UserInfo findByEmail(String email);
+	UserInfo findByPhone(String phone);
 }
