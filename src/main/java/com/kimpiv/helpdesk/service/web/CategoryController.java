@@ -1,5 +1,7 @@
 package com.kimpiv.helpdesk.service.web;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kimpiv.helpdesk.model.Category;
 import com.kimpiv.helpdesk.service.CategoryService;
@@ -29,7 +32,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("{id}")
-	public String newCategory(@PathVariable("id") String id, Model model) {
+	public String saveCategory(@PathVariable("id") String id, Model model) {
 		if(id.equals("new")) {			
 			model.addAttribute("category", new Category());
 		} else {
@@ -62,5 +65,11 @@ public class CategoryController {
 		}
 		categoryService.save(category);
 		return "redirect:/category?saved";
+	}
+	
+	@GetMapping("sub/{id}")
+	@ResponseBody
+	public List<Category> getSubCategories(@PathVariable("id") Long id) {
+		return categoryService.findSubCategories(id);
 	}
 }

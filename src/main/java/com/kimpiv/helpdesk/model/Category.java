@@ -11,8 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="category")
 public class Category {
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -25,14 +29,14 @@ public class Category {
 	private Category mainCategory;
 	
 	@OneToMany(mappedBy = "mainCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Category> subCategories;
+	
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<RequestTicket> tickets;
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -60,14 +64,11 @@ public class Category {
 	}
 
 	public Category(String name, Category mainCategory) {
-		super();
 		this.name = name;
 		this.mainCategory = mainCategory;
 	}
 
-	public Category() {
-		super();
-	}
+	public Category() {}
 	
 	
 }

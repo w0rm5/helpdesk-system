@@ -45,8 +45,11 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li sec:authorize="isAuthenticated()"><a class="dropdown-item"
-									th:href="@{/logout}">Logout</a></li>
+							<li sec:authorize="isAuthenticated()">
+								<a class="dropdown-item" th:href="@{/logout}">
+									Logout
+								</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -55,7 +58,56 @@
 	</nav>
 
 	<div class="container">
-		<h1>Home</h1>
+		<div class="row">
+			<div class="col-md-6">
+				<h1>Your Requests</h1>
+			</div>
+			<div class="col-md-6 d-flex align-items-md-end">
+				<a class="btn btn-primary ms-auto" th:href="@{/new}" sec:authorize="hasRole('ROLE_USER')">New Request Ticket</a>
+			</div>
+		</div>
+		
+		<div th:if="${param.added}" class="row">
+			<div class="col alert alert-info mt-2">
+				Request Ticket Added
+			</div>
+		</div>
+		<div th:if="${param.drafted}" class="row">
+			<div class="col alert alert-info mt-2">
+				Request Ticket Draft Saved
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col" sec:authorize="hasRole('ROLE_HELPER')">Requester</th>
+							<th scope="col" sec:authorize="hasRole('ROLE_USER')">Helper</th>
+							<th scope="col">Main Category</th>
+							<th scope="col">Sub Category</th>
+							<th scope="col">Details</th>
+							<th scope="col">Status</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="ticket : ${tickets}">
+							<th th:text="${ticket.id}" scope="row">1</th>
+							<td th:text="${ticket.mainCategory.name}" sec:authorize="hasRole('ROLE_HELPER')">Name</td>
+							<td th:text="${ticket.subCategory.name}" sec:authorize="hasRole('ROLE_USER')">Name</td>
+							<td th:text="${ticket.details}" sec:authorize="hasRole('ROLE_USER')">Name</td>
+							<td th:text="${ticket.status}" sec:authorize="hasRole('ROLE_USER')">Name</td>
+							<td> <a class="btn btn-primary" th:href="@{/ticket/{id}(id=${ticket.id})}">Edit</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 	</div>
 </body>
 

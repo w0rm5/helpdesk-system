@@ -34,11 +34,18 @@ public class HelpdeskSystemApplication {
 			UserRegistrationDto newAdmin = new UserRegistrationDto(
 					"Admin", "Admin", "Male", "1993-10-26", 
 					"Phnom Penh", "Phnom Penh", "077460610", 
-					"admin@example.com", "USER01", "IT", 
+					"admin@example.com", "ADMIN01", "IT", 
 					"Test Unit", "admin123", "admin123", "ROLE_ADMIN");
 			
 			userService.saveUser(newAdmin);
-			userService.addRoleToUser("admin@example.com", "ROLE_USER");
+			userService.addRoleToUser("admin@example.com", "ROLE_HELPER");
+			
+			UserRegistrationDto newUser = new UserRegistrationDto(
+					"Admin", "Admin", "Female", "1995-05-21", 
+					"Phnom Penh", "Phnom Penh", "123456789", 
+					"user@example.com", "USER01", "IT", 
+					"Test Unit", "user123", "user123", "ROLE_USER");
+			userService.saveUser(newUser);
 			
 			Category cate1 = new Category("System-software problems", null);
 			categoryService.save(cate1);

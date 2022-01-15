@@ -4,8 +4,10 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Home</title>
+	<title>Categories</title>
 	<link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link th:rel="stylesheet" th:href="@{/css/styles.css}" />
+	<script th:src="@{/js/jquery.min.js}"></script>
 	<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </head>
 
@@ -45,11 +47,8 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li sec:authorize="isAuthenticated()">
-								<a class="dropdown-item" th:href="@{/logout}">
-									Logout
-								</a>
-							</li>
+							<li sec:authorize="isAuthenticated()"><a class="dropdown-item"
+									th:href="@{/logout}">Logout</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -59,56 +58,60 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
-				<h1>Your Requests</h1>
-			</div>
-			<div class="col-md-6 d-flex align-items-md-end">
-				<a class="btn btn-primary ms-auto" th:href="@{/new}" sec:authorize="hasRole('ROLE_USER')">New Request Ticket</a>
-			</div>
-		</div>
-		
-		<div th:if="${param.added}" class="row">
-			<div class="col alert alert-info mt-2">
-				Request Ticket Added
-			</div>
-		</div>
-		<div th:if="${param.drafted}" class="row">
-			<div class="col alert alert-info mt-2">
-				Request Ticket Draft Saved
-			</div>
-		</div>
-		
-		<div class="row">
 			<div class="col">
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col" sec:authorize="hasRole('ROLE_HELPER')">Requester</th>
-							<th scope="col" sec:authorize="hasRole('ROLE_USER')">Helper</th>
-							<th scope="col">Main Category</th>
-							<th scope="col">Sub Category</th>
-							<th scope="col">Details</th>
-							<th scope="col">Status</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="ticket : ${tickets}">
-							<th th:text="${ticket.id}" scope="row">1</th>
-							<td th:text="${ticket.mainCategory.name}" sec:authorize="hasRole('ROLE_HELPER')">Name</td>
-							<td th:text="${ticket.subCategory.name}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td th:text="${ticket.details}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td th:text="${ticket.status}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td> <a class="btn btn-primary" th:href="@{/ticket/{id}(id=${ticket.id})}">Edit</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<h1>Edit Request</h1>
 			</div>
 		</div>
 
+		<form class="row mb-2" th:action="@{/save}" method="post" th:object="${ticket}">
+			<input type="hidden" th:field="*{id}" />
+			<div class="col-12 mb-2">
+				<label class="form-label" for="status">Status</label>
+				<select class="form-select" id="status" name="status" th:field="*{status}" th:readonly="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+				<th:block th:each="status_map : ${statuses}">
+					<option th:each="s : ${status_map}" th:text="${s.value}" th:value="${s.key}"></option>
+				</th:block>
+				</select>
+			</div>
+			<div class="col-12 mb-2">
+				<label class="form-label" for="mainCategory">Main category</label>
+				<select class="form-select" id="mainCategory" name="mainCategory" th:field="*{mainCategory}">
+					<option th:each="mainCat : ${mainCategories}" th:text="${mainCat.name}" th:value="${mainCat.id}"></option>
+				</select>
+			</div>
+			<div class="col-12 mb-2" id="subCategoryDiv">
+				<label class="form-label" for="subCategory">Sub category</label>
+				<select class="form-select" id="subCategory" name="subCategory" th:field="*{subCategory}">
+				</select>
+			</div>
+			<div class="col-12 mt-2">
+				<a class="btn btn-secondary float-end ms-2" th:href="@{/}">Cancel</a>
+				<input class="btn btn-primary float-end" type="submit" value="Save" />
+			</div>
+		</form>
 	</div>
+	<script>
+		function subCategories() {
+			$.get("/category/sub/" + $(this).val(), function(data) {
+				$('#subCategory').empty()
+				if(data.length) {
+					$('#subCategoryDiv').removeClass("d-none")
+					$.each(data, function (i, item) {
+					    $('#subCategory').append($('<option>', { 
+					        value: item.id,
+					        text : item.name 
+					    }));
+					});
+				} else {
+					$('#subCategoryDiv').addClass("d-none")
+				}
+			})
+		}
+		$(function() {
+			$('#mainCategory').on("change", subCategories).change()
+		});
+	</script>
+	
 </body>
 
 </html>

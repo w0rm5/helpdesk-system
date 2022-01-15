@@ -14,4 +14,5 @@ public interface UserService extends UserDetailsService{
 	void addRoleToUser(String email, String roleName);
 	void removeRoleFromUser(String email, String roleName);
 	List<UserInfo> getUsers();
+	UserInfo getUserByEmail(String email);
 }
