@@ -59,11 +59,10 @@ public class Category {
 		this.subCategories = subCategories;
 	}
 
-	public Category(String name, Category mainCategory, List<Category> subCategories) {
+	public Category(String name, Category mainCategory) {
 		super();
 		this.name = name;
 		this.mainCategory = mainCategory;
-		this.subCategories = subCategories;
 	}
 
 	public Category() {

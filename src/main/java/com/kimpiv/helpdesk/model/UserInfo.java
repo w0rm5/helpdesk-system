@@ -51,6 +51,8 @@ public class UserInfo {
 	private String unit;
 	
 	private String password;
+	
+	private boolean banned = false;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(
@@ -191,6 +193,14 @@ public class UserInfo {
 
 	public Long getId() {
 		return id;
+	}
+
+	public boolean isBanned() {
+		return banned;
+	}
+
+	public void setBanned(boolean banned) {
+		this.banned = banned;
 	}
 	
 }

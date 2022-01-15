@@ -42,4 +42,15 @@ public class CategoryServiceImpl implements CategoryService{
 		return categoryRepository.save(category);
 	}
 
+	@Override
+	public List<Category> findSubCategories(Long id) {
+		if(id != null) {	
+			Optional<Category> mainCategory = categoryRepository.findById(id);
+			if(mainCategory.isPresent()) {
+				return categoryRepository.findByMainCategory(mainCategory.get());
+			}
+		}
+		return categoryRepository.findByMainCategory(null);
+	}
+
 }

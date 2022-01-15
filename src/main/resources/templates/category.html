@@ -6,7 +6,7 @@
 	<meta charset="UTF-8" />
 	<title>Categories</title>
 	<link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<script th:src="@{js/bootstrap.bundle.js}"></script>
+	<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </head>
 
 <body>
@@ -55,25 +55,39 @@
 	</nav>
 
 	<div class="container">
-		<h1>Categories List</h1>
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">ID</th>
-					<th scope="col">Name</th>
-					<th scope="col">Type</th>
-					<th scope="col">Child of</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="category : ${mainCategories}">
-					<th th:text="${category.id}" scope="row">1</th>
-					<td th:text="${category.name}">Test</td>
-					<td th:text="${category.mainCategory == null ? 'Main Category' : 'Sub Category'}">Main</td>
-					<td th:text="${category.mainCategory == null ? '' : category.mainCategory.name}">Sub</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-md-6">
+				<h1>Categories List</h1>
+			</div>
+			<div class="col-md-6 d-flex align-items-md-end">
+				<a class="btn btn-primary ms-auto" th:href="@{/category/new}">New Category</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Name</th>
+							<th scope="col">Type</th>
+							<th scope="col">Child of</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="category : ${mainCategories}">
+							<th th:text="${category.id}" scope="row">1</th>
+							<td th:text="${category.name}">Name</td>
+							<td th:text="${category.mainCategory == null ? 'Main Category' : 'Sub Category'}">Main</td>
+							<td th:text="${category.mainCategory == null ? '' : category.mainCategory.name}">Sub</td>
+							<td> <a class="btn btn-primary" th:href="@{/category/{id}(id=${category.id})}">Edit</a> </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 	</div>
 </body>
 

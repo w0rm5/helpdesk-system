@@ -40,18 +40,18 @@ public class HelpdeskSystemApplication {
 			userService.saveUser(newAdmin);
 			userService.addRoleToUser("laykimpiv@gmail.com", "ROLE_ADMIN");
 			
-			Category cate1 = new Category("System-software problems", null, null);
+			Category cate1 = new Category("System-software problems", null);
 			categoryService.save(cate1);
-			categoryService.save(new Category("Online business tax declaration management system", cate1, null));
-			categoryService.save(new Category("Online tax payment management system", cate1, null));
-			categoryService.save(new Category("Tax sutdy management system", cate1, null));
-			categoryService.save(new Category("Small taxpayer business tax declaration software", cate1, null));
-			Category cate2 = new Category("Technology infrastructure problems", null, null);
+			categoryService.save(new Category("Online business tax declaration management system", cate1));
+			categoryService.save(new Category("Online tax payment management system", cate1));
+			categoryService.save(new Category("Tax sutdy management system", cate1));
+			categoryService.save(new Category("Small taxpayer business tax declaration software", cate1));
+			Category cate2 = new Category("Technology infrastructure problems", null);
 			categoryService.save(cate2);
-			categoryService.save(new Category("Network", cate2, null));
-			categoryService.save(new Category("Computers and printers", cate2, null));
-			categoryService.save(new Category("Table phones", cate2, null));
-			categoryService.save(new Category("Other technical problems", null, null));
+			categoryService.save(new Category("Network", cate2));
+			categoryService.save(new Category("Computers and printers", cate2));
+			categoryService.save(new Category("Table phones", cate2));
+			categoryService.save(new Category("Other technical problems", null));
 		};
 	}
 	

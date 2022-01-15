@@ -53,12 +53,13 @@ public class UserServiceImpl implements UserService {
 		if(user == null) {
 			throw new UsernameNotFoundException("Invalid email or password");
 		}
-		
+		if(user.isBanned()) {
+			throw new UsernameNotFoundException("You have been banned from loggin in. Please contact an administrator.");
+		}
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		user.getRoles().forEach(role -> { 
 			authorities.add(new SimpleGrantedAuthority(role.getName()));
 		});
-	
 		return new User(user.getEmail(), user.getPassword(), authorities);
 	}
 

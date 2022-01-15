@@ -32,7 +32,7 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping
-	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
+	public String registerUserAccount(@ModelAttribute("newUser") UserRegistrationDto registrationDto) {
 		UserInfo user = userRepository.findByEmail(registrationDto.getEmail());
 		if(user != null) {
 			return "redirect:/registration?emailerror";

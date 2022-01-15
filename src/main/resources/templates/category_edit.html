@@ -56,37 +56,28 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
-				<h1>Categories List</h1>
-			</div>
-			<div class="col-md-6 d-flex align-items-md-end">
-				<a class="btn btn-primary ms-auto" th:href="@{/category/new}">New Category</a>
-			</div>
-		</div>
-		<div class="row">
 			<div class="col">
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Name</th>
-							<th scope="col">Type</th>
-							<th scope="col">Child of</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="category : ${mainCategories}">
-							<th th:text="${category.id}" scope="row">1</th>
-							<td th:text="${category.name}">Name</td>
-							<td th:text="${category.mainCategory == null ? 'Main Category' : 'Sub Category'}">Main</td>
-							<td th:text="${category.mainCategory == null ? '' : category.mainCategory.name}">Sub</td>
-							<td> <a class="btn btn-primary" th:href="@{/category/{id}(id=${category.id})}">Edit</a> </td>
-						</tr>
-					</tbody>
-				</table>
+				<h1>Edit Category</h1>
 			</div>
 		</div>
+		<form class="row mb-2" th:action="@{/category/save}" method="post" th:object="${category}">
+			<div class="col-12 mb-2">
+				<label class="form-label" for="name">Category Name</label>
+				<input class="form-control" type="text" id="name" name="name"
+					th:field="*{name}" required />
+			</div>
+			<div class="col-12 mb-2">
+				<label class="form-label" for="mainCategory">Sub category of</label>
+				<select class="form-select" th:field="*{mainCategory}" >
+					<option selected th:value="@{null}">This will be a main category</option>
+					<option th:each="cat : ${mainCategories}" th:text="${cat.name}" th:value="${cat.id}"></option>
+				</select>	
+			</div>
+			<div class="col-12 mt-2">
+				<a class="btn btn-secondary float-end ms-2" th:href="@{/category}">Cancel</a>
+				<input class="btn btn-primary float-end" type="submit" value="Save" />
+			</div>
+		</form>
 
 	</div>
 </body>

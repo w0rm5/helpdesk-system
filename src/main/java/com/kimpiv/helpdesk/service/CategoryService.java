@@ -9,4 +9,5 @@ public interface CategoryService {
 	Category findByName(String name);
 	Category findById(Long id);
 	List<Category> getAllCategories();
+	List<Category> findSubCategories(Long id);
 }
