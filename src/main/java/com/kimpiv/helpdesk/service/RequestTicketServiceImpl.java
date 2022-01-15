@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.kimpiv.helpdesk.model.Category;
 import com.kimpiv.helpdesk.model.RequestTicket;
-import com.kimpiv.helpdesk.model.Status;
 import com.kimpiv.helpdesk.model.UserInfo;
 import com.kimpiv.helpdesk.repository.RequestTicketRepository;
 import com.kimpiv.helpdesk.service.web.dto.RequestTicketDto;
@@ -65,15 +64,11 @@ public class RequestTicketServiceImpl implements RequestTicketService{
 
 	@Override
 	public RequestTicketDto convertToDto(RequestTicket ticket) {
-		Status status = Status.fromInt(ticket.getStatus());
-		System.out.println(status);
-		System.out.println(status.name());
-		System.out.println(status.toString());
 		RequestTicketDto ticketDto = new RequestTicketDto(
 				ticket.getId(), ticket.getRequester(), ticket.getHelper(), 
 				ticket.getCategory().getMainCategory(), ticket.getCategory(), 
 				ticket.getDetails(), ticket.getResponseFromHelper(),
-				ticket.isDrafted(), status.getStatusCode());
+				ticket.isDrafted(), ticket.getStatus());
 		if(ticket.getCategory().getMainCategory() == null) {
 			ticketDto.setMainCategory(ticket.getCategory());
 			ticketDto.setSubCategory(null);

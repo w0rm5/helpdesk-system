@@ -63,13 +63,14 @@
 				<h1>Your Requests</h1>
 			</div>
 			<div class="col-md-6 d-flex align-items-md-end">
-				<a class="btn btn-primary ms-auto" th:href="@{/new}" sec:authorize="hasRole('ROLE_USER')">New Request Ticket</a>
+				<a class="btn btn-primary ms-auto" th:href="@{/ticket/new}" sec:authorize="hasRole('ROLE_USER')">New Request
+					Ticket</a>
 			</div>
 		</div>
-		
-		<div th:if="${param.added}" class="row">
+
+		<div th:if="${param.saved}" class="row">
 			<div class="col alert alert-info mt-2">
-				Request Ticket Added
+				Request Ticket Saved
 			</div>
 		</div>
 		<div th:if="${param.drafted}" class="row">
@@ -77,7 +78,7 @@
 				Request Ticket Draft Saved
 			</div>
 		</div>
-		
+
 		<div class="row">
 			<div class="col">
 				<table class="table">
@@ -96,11 +97,18 @@
 					<tbody>
 						<tr th:each="ticket : ${tickets}">
 							<th th:text="${ticket.id}" scope="row">1</th>
-							<td th:text="${ticket.mainCategory.name}" sec:authorize="hasRole('ROLE_HELPER')">Name</td>
-							<td th:text="${ticket.subCategory.name}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td th:text="${ticket.details}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td th:text="${ticket.status}" sec:authorize="hasRole('ROLE_USER')">Name</td>
-							<td> <a class="btn btn-primary" th:href="@{/ticket/{id}(id=${ticket.id})}">Edit</a>
+							<td th:text="${ticket.requester.lastName + ' ' + ticket.requester.firstName}"
+								sec:authorize="hasRole('ROLE_HELPER')">Name</td>
+							<td th:text="${ticket.helper ne null} ? ${ticket.helper.lastName + ' ' + ticket.helper.firstName} : ''"
+								sec:authorize="hasRole('ROLE_USER')">Name</td>
+							<td th:text="${ticket.mainCategory.name}">Name</td>
+							<td th:text="${ticket?.subCategory?.name}">Name</td>
+							<td th:text="${ticket.details}">Name</td>
+							<td th:text="${statuses.get(ticket.status)}">Name</td>
+							<td>
+								<a class="btn btn-primary" th:href="@{/ticket/{id}(id=${ticket.id})}"
+									th:text="${ticket.status} == 0 and ${#authorization.expression('hasRole(''ROLE_USER'')')} ? 'Edit' : 'View'"
+								></a>
 							</td>
 						</tr>
 					</tbody>

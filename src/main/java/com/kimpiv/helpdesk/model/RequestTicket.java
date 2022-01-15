@@ -30,7 +30,7 @@ public class RequestTicket {
 	@JoinColumn(name="category_id", nullable = false)
 	private Category category;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 60000)
 	private String details;
 	
 	private String responseFromHelper;
@@ -39,12 +39,12 @@ public class RequestTicket {
 	
 	private int status;
 	
-	private LocalDate date;
+	private LocalDate date = LocalDate.now();
 	
 	
 	public RequestTicket() {}
 
-	public RequestTicket(Long id, UserInfo requester, UserInfo helper, Category category, String details,
+	public RequestTicket(UserInfo requester, UserInfo helper, Category category, String details,
 			String responseFromHelper, boolean drafted, int status) {
 		this.requester = requester;
 		this.helper = helper;

@@ -59,30 +59,55 @@
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<h1>Edit Request</h1>
+				<h1>Request Form</h1>
 			</div>
 		</div>
 
-		<form class="row mb-2" th:action="@{/save}" method="post" th:object="${ticket}">
-			<input type="hidden" th:field="*{id}" />
+		<form id="myform" class="row mb-2" th:action="@{/ticket/save}" method="post" th:object="${ticket}">
+			<input type="hidden" id="id" name="id" th:field="*{id}" />
+			<input type="hidden" id="requester" name="requester" th:field="*{requester}" />
+			<input type="hidden" id="helper" name="helper" th:field="*{helper}" />
+			<div class="col-12 mb-2">
+				<p class="fs-4">Requested by: </p>
+				<p class="fs-4" th:text="${ticket.requester.lastName + ' ' + ticket.requester.firstName}"></p>
+			</div>
 			<div class="col-12 mb-2">
 				<label class="form-label" for="status">Status</label>
-				<select class="form-select" id="status" name="status" th:field="*{status}" th:readonly="${#authorization.expression('hasRole(''ROLE_USER'')')}">
-				<th:block th:each="status_map : ${statuses}">
-					<option th:each="s : ${status_map}" th:text="${s.value}" th:value="${s.key}"></option>
-				</th:block>
+				<select class="form-select" id="status" name="status" th:field="*{status}"
+					th:readonly="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+					<th:block th:each="status_map : ${statuses}">
+						<option th:each="s : ${status_map}" th:text="${s.value}" th:value="${s.key}"></option>
+					</th:block>
 				</select>
 			</div>
 			<div class="col-12 mb-2">
 				<label class="form-label" for="mainCategory">Main category</label>
 				<select class="form-select" id="mainCategory" name="mainCategory" th:field="*{mainCategory}">
-					<option th:each="mainCat : ${mainCategories}" th:text="${mainCat.name}" th:value="${mainCat.id}"></option>
+					<option th:each="mainCat : ${mainCategories}" th:text="${mainCat.name}" th:value="${mainCat.id}">
+					</option>
 				</select>
 			</div>
 			<div class="col-12 mb-2" id="subCategoryDiv">
 				<label class="form-label" for="subCategory">Sub category</label>
 				<select class="form-select" id="subCategory" name="subCategory" th:field="*{subCategory}">
 				</select>
+			</div>
+			<div class="col-12 mb-2">
+				<label class="form-label" for="details">Problem in details</label>
+				<textarea heigth="50" class="form-control" id="details" name="details" th:field="*{details}" required></textarea>
+			</div>
+			<div class="col-12 mb-2" sec:authorize="hasRole('ROLE_HELPER')">
+				<label class="form-label" for="responseFromHelper">Response from helper</label>
+				<textarea class="form-control" id="responseFromHelper" name="responseFromHelper"
+					th:field="*{responseFromHelper}"></textarea>
+			</div>
+			<div class="col-12 mb-2">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="drafted" name="drafted" th:field="*{drafted}">
+					<label class="form-check-label" for="drafted">
+						Saved as a draft
+					</label>
+				</div>
 			</div>
 			<div class="col-12 mt-2">
 				<a class="btn btn-secondary float-end ms-2" th:href="@{/}">Cancel</a>
@@ -92,26 +117,30 @@
 	</div>
 	<script>
 		function subCategories() {
-			$.get("/category/sub/" + $(this).val(), function(data) {
+			$.get("/category/sub/" + $(this).val(), function (data) {
 				$('#subCategory').empty()
-				if(data.length) {
+				if (data.length) {
 					$('#subCategoryDiv').removeClass("d-none")
 					$.each(data, function (i, item) {
-					    $('#subCategory').append($('<option>', { 
-					        value: item.id,
-					        text : item.name 
-					    }));
+						$('#subCategory').append($('<option>', {
+							value: item.id,
+							text: item.name
+						}));
 					});
 				} else {
 					$('#subCategoryDiv').addClass("d-none")
 				}
 			})
 		}
-		$(function() {
+		$(function () {
 			$('#mainCategory').on("change", subCategories).change()
+			//$('#myform').submit(function(data) {
+			//    console.log($('#myform').serialize())
+			//    return false; // return false to cancel form action
+			//});
 		});
 	</script>
-	
+
 </body>
 
 </html>

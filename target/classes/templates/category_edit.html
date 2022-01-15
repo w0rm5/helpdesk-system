@@ -69,11 +69,11 @@
 			<input type="hidden" th:field="*{id}" />
 			<div class="col-12 mb-2">
 				<label class="form-label" for="name">Category Name</label>
-				<input class="form-control" type="text" id="name" name="name" th:field="*{name}" required />
+				<input class="form-control" type="text" th:field="*{name}" required />
 			</div>
 			<div class="col-12 mb-2">
 				<label class="form-label" for="mainCategory">Sub category of</label>
-				<select class="form-select" id="mainCategory" name="mainCategory" th:field="*{mainCategory}">
+				<select class="form-select" th:field="*{mainCategory}">
 					<option selected th:value="@{null}">This will be a main category</option>
 					<option th:each="cat : ${mainCategories}" th:text="${cat.name}" th:value="${cat.id}"></option>
 				</select>

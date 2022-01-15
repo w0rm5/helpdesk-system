@@ -60,7 +60,7 @@ public class CategoryController {
 		Category c = categoryService.findByName(category.getName());
 		if(c != null) {
 			if(category.getId() == null || category.getId() != c.getId() ) {
-				return "redirect:/category/new?errorname";
+				return "redirect:/category/" + (category.getId() == null ? "new" : category.getId().toString()) + "?errorname";
 			}
 		}
 		categoryService.save(category);

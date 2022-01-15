@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.kimpiv.helpdesk.model.Category;
+import com.kimpiv.helpdesk.model.RequestTicket;
 import com.kimpiv.helpdesk.model.Role;
 import com.kimpiv.helpdesk.service.CategoryService;
+import com.kimpiv.helpdesk.service.RequestTicketService;
 import com.kimpiv.helpdesk.service.UserService;
 import com.kimpiv.helpdesk.service.web.dto.UserRegistrationDto;
 
@@ -25,7 +27,7 @@ public class HelpdeskSystemApplication {
 	}
 	
 	@Bean
-	CommandLineRunner run(UserService userService, CategoryService categoryService) {
+	CommandLineRunner run(UserService userService, CategoryService categoryService, RequestTicketService requestTicketService) {
 		return args -> {
 			userService.saveRole(new Role("ROLE_ADMIN"));
 			userService.saveRole(new Role("ROLE_USER"));
@@ -41,7 +43,7 @@ public class HelpdeskSystemApplication {
 			userService.addRoleToUser("admin@example.com", "ROLE_HELPER");
 			
 			UserRegistrationDto newUser = new UserRegistrationDto(
-					"Admin", "Admin", "Female", "1995-05-21", 
+					"User", "Test", "Female", "1995-05-21", 
 					"Phnom Penh", "Phnom Penh", "123456789", 
 					"user@example.com", "USER01", "IT", 
 					"Test Unit", "user123", "user123", "ROLE_USER");
@@ -54,11 +56,14 @@ public class HelpdeskSystemApplication {
 			categoryService.save(new Category("Tax sutdy management system", cate1));
 			categoryService.save(new Category("Small taxpayer business tax declaration software", cate1));
 			Category cate2 = new Category("Technology infrastructure problems", null);
+			Category cate3 = new Category("Network", cate2);
 			categoryService.save(cate2);
-			categoryService.save(new Category("Network", cate2));
+			categoryService.save(cate3);
 			categoryService.save(new Category("Computers and printers", cate2));
 			categoryService.save(new Category("Table phones", cate2));
 			categoryService.save(new Category("Other technical problems", null));
+			
+			requestTicketService.save(new RequestTicket(userService.getUserByEmail("user@example.com"), null, cate3, "test", null, false, 0));
 		};
 	}
 	
