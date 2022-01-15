@@ -56,8 +56,11 @@ public class CategoryController {
 	public String saveCategory(@ModelAttribute("category") Category category) {
 		Category c = categoryService.findByName(category.getName());
 		if(c != null) {
-			return "redirect:/category/new?saved";
+			if(category.getId() == null || category.getId() != c.getId() ) {
+				return "redirect:/category/new?errorname";
+			}
 		}
+		categoryService.save(category);
 		return "redirect:/category?saved";
 	}
 }

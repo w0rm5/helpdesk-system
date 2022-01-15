@@ -60,7 +60,13 @@
 				<h1>Edit Category</h1>
 			</div>
 		</div>
+		<div th:if="${param.errorname}" class="row">
+				<div class="col my-2 alert alert-danger">
+					Category name is already in used
+				</div>
+			</div>
 		<form class="row mb-2" th:action="@{/category/save}" method="post" th:object="${category}">
+			<input type="hidden" th:field="*{id}"/>
 			<div class="col-12 mb-2">
 				<label class="form-label" for="name">Category Name</label>
 				<input class="form-control" type="text" id="name" name="name"

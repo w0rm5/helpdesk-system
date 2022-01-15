@@ -63,6 +63,11 @@
 				<a class="btn btn-primary ms-auto" th:href="@{/category/new}">New Category</a>
 			</div>
 		</div>
+		<div th:if="${param.saved}" class="row">
+			<div class="col alert alert-info mt-2">
+				Category saved
+			</div>
+		</div>
 		<div class="row">
 			<div class="col">
 				<table class="table">
@@ -81,7 +86,8 @@
 							<td th:text="${category.name}">Name</td>
 							<td th:text="${category.mainCategory == null ? 'Main Category' : 'Sub Category'}">Main</td>
 							<td th:text="${category.mainCategory == null ? '' : category.mainCategory.name}">Sub</td>
-							<td> <a class="btn btn-primary" th:href="@{/category/{id}(id=${category.id})}">Edit</a> </td>
+							<td> <a class="btn btn-primary" th:href="@{/category/{id}(id=${category.id})}">Edit</a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
