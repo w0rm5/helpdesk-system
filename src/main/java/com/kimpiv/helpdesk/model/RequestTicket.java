@@ -42,6 +42,10 @@ public class RequestTicket {
 	private LocalDate date = LocalDate.now();
 	
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public RequestTicket() {}
 
 	public RequestTicket(UserInfo requester, UserInfo helper, Category category, String details,

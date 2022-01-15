@@ -25,12 +25,6 @@
 						<a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#" sec:authorize="hasRole('ROLE_USER')">User</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#" sec:authorize="hasRole('ROLE_HELPER')">Helper</a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" th:href="@{/user}" sec:authorize="hasRole('ROLE_ADMIN')">User List</a>
 					</li>
 					<li class="nav-item">
@@ -43,10 +37,6 @@
 							data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="principal.username">User
 							email</a>
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" href="#">Settings</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
 							<li sec:authorize="isAuthenticated()"><a class="dropdown-item"
 									th:href="@{/logout}">Logout</a></li>
 						</ul>
@@ -94,14 +84,15 @@
 			</div>
 			<div class="col-12 mb-2">
 				<label class="form-label" for="details">Problem in details</label>
-				<textarea heigth="50" class="form-control" id="details" name="details" th:field="*{details}" required></textarea>
+				<textarea heigth="50" class="form-control" id="details" name="details" th:field="*{details}" 
+					th:readonly="${#authorization.expression('hasRole(''ROLE_HELPER'')')}" required></textarea>
 			</div>
 			<div class="col-12 mb-2" sec:authorize="hasRole('ROLE_HELPER')">
 				<label class="form-label" for="responseFromHelper">Response from helper</label>
 				<textarea class="form-control" id="responseFromHelper" name="responseFromHelper"
 					th:field="*{responseFromHelper}"></textarea>
 			</div>
-			<div class="col-12 mb-2">
+			<div class="col-12 mb-2" sec:authorize="hasRole('ROLE_USER')">
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" id="drafted" name="drafted" th:field="*{drafted}">
 					<label class="form-check-label" for="drafted">
@@ -134,10 +125,6 @@
 		}
 		$(function () {
 			$('#mainCategory').on("change", subCategories).change()
-			//$('#myform').submit(function(data) {
-			//    console.log($('#myform').serialize())
-			//    return false; // return false to cancel form action
-			//});
 		});
 	</script>
 

@@ -14,8 +14,10 @@ public interface RequestTicketService {
 	List<RequestTicket> findByRequester(UserInfo requester);
 	List<RequestTicket> findByHelper(UserInfo helper);
 	List<RequestTicket> findByCategory(Category category);
-	List<RequestTicket> findByDrafted(boolean isDrafted);
+//	List<RequestTicket> findByDrafted(boolean isDrafted);
 	List<RequestTicket> findByStatus(int status);
+//	List<RequestTicket> findByStatusAndDraftedFalse(int status);
+	List<RequestTicket> findByHelperNullAndDraftedFalse();
 	RequestTicketDto convertToDto(RequestTicket ticket);
 	List<RequestTicketDto> convertToDtoList(List<RequestTicket> tickets);
 }

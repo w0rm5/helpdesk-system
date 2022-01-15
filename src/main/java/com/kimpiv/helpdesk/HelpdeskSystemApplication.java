@@ -49,6 +49,13 @@ public class HelpdeskSystemApplication {
 					"Test Unit", "user123", "user123", "ROLE_USER");
 			userService.saveUser(newUser);
 			
+			newUser = new UserRegistrationDto(
+					"User2", "Test", "Female", "1995-05-21", 
+					"Phnom Penh", "Phnom Penh", "0123456789", 
+					"user2@example.com", "USER01", "IT", 
+					"Test Unit", "user123", "user123", "ROLE_USER");
+			userService.saveUser(newUser);
+			
 			Category cate1 = new Category("System-software problems", null);
 			categoryService.save(cate1);
 			categoryService.save(new Category("Online business tax declaration management system", cate1));
@@ -64,6 +71,8 @@ public class HelpdeskSystemApplication {
 			categoryService.save(new Category("Other technical problems", null));
 			
 			requestTicketService.save(new RequestTicket(userService.getUserByEmail("user@example.com"), null, cate3, "test", null, false, 0));
+			requestTicketService.save(new RequestTicket(userService.getUserByEmail("user2@example.com"), null, cate3, "test", null, false, 0));
+			requestTicketService.save(new RequestTicket(userService.getUserByEmail("user2@example.com"), null, cate3, "test draft", null, true, 0));
 		};
 	}
 	

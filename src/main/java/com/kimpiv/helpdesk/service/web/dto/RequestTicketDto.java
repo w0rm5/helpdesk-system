@@ -1,5 +1,7 @@
 package com.kimpiv.helpdesk.service.web.dto;
 
+import java.time.LocalDate;
+
 import com.kimpiv.helpdesk.model.Category;
 import com.kimpiv.helpdesk.model.UserInfo;
 
@@ -23,6 +25,16 @@ public class RequestTicketDto {
 	
 	private int status;
 	
+	private LocalDate date;
+	
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
 	public RequestTicketDto() {}
 
@@ -31,7 +43,7 @@ public class RequestTicketDto {
 	}
 	
 	public RequestTicketDto(Long id, UserInfo requester, UserInfo helper, Category mainCategory, Category subCategory,
-			String details, String responseFromHelper, boolean drafted, int status) {
+			String details, String responseFromHelper, boolean drafted, int status, LocalDate date) {
 		this.id = id;
 		this.requester = requester;
 		this.helper = helper;
@@ -41,6 +53,7 @@ public class RequestTicketDto {
 		this.responseFromHelper = responseFromHelper;
 		this.drafted = drafted;
 		this.status = status;
+		this.date = date;
 	}
 	
 	public Long getId() {
@@ -109,6 +122,10 @@ public class RequestTicketDto {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

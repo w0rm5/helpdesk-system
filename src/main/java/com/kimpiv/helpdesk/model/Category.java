@@ -33,10 +33,23 @@ public class Category {
 	private List<Category> subCategories;
 	
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<RequestTicket> tickets;
 
 	public Long getId() {
 		return id;
+	}
+
+	public List<RequestTicket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(List<RequestTicket> tickets) {
+		this.tickets = tickets;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

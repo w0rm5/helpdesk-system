@@ -1,6 +1,7 @@
 package com.kimpiv.helpdesk.service.web.dto;
 
 public class UserRegistrationDto {
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String gender;
@@ -36,10 +37,39 @@ public class UserRegistrationDto {
 		this.role = role;
 	}
 	
+	public UserRegistrationDto(Long id, String firstName, String lastName, String gender, String dateOfBirth,
+			String placeOfBirth, String currentAddress, String phone, String email, String userId, String position,
+			String unit, String password, String confirmPassword, String role) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.placeOfBirth = placeOfBirth;
+		this.currentAddress = currentAddress;
+		this.phone = phone;
+		this.email = email;
+		this.userId = userId;
+		this.position = position;
+		this.unit = unit;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+		this.role = role;
+	}
+	
 	public UserRegistrationDto() {
 		super();
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

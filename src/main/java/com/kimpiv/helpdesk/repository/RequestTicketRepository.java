@@ -14,6 +14,8 @@ public interface RequestTicketRepository extends JpaRepository<RequestTicket, Lo
 	List<RequestTicket> findByRequester(UserInfo requester);
 	List<RequestTicket> findByHelper(UserInfo helper);
 	List<RequestTicket> findByCategory(Category category);
-	List<RequestTicket> findByDrafted(boolean isDrafted);
+//	List<RequestTicket> findByDrafted(boolean isDrafted);
+//	List<RequestTicket> findByStatusAndDraftedFalse(int status);
+	List<RequestTicket> findByHelperNullAndDraftedFalse();
 	List<RequestTicket> findByStatus(int status);
 }

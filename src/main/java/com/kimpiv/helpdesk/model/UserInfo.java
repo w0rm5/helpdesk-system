@@ -191,6 +191,10 @@ public class UserInfo {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public boolean isBanned() {
 		return banned;
 	}

@@ -93,4 +93,33 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmail(email);
 	}
 
+	@Override
+	public UserInfo getUserById(Long id) {
+		return userRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public UserInfo saveUser(UserInfo user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		return userRepository.save(user);
+	}
+
+	@Override
+	public UserInfo updateUser(UserRegistrationDto userDto) {
+		UserInfo user = getUserById(userDto.getId());
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		user.setGender(userDto.getGender());
+		user.setDateOfBirth(LocalDate.parse(userDto.getDateOfBirth()));
+		user.setPlaceOfBirth(userDto.getPlaceOfBirth());
+		user.setCurrentAddress(userDto.getCurrentAddress());
+		user.setPhone(userDto.getPhone());
+		user.setEmail(userDto.getEmail());
+		user.setUserId(userDto.getUserId());
+		user.setPosition(userDto.getPosition());
+		user.setUnit(userDto.getUnit());
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		return userRepository.save(user);
+	}
+
 }

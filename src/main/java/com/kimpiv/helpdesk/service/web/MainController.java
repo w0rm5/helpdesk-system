@@ -1,5 +1,7 @@
 package com.kimpiv.helpdesk.service.web;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -59,7 +61,10 @@ public class MainController {
 		if(checkCurrentUserRole("ROLE_USER")){
 			tickets = requestTicketService.findByRequester(user);
 		}else {
-			tickets = requestTicketService.findByHelper(user);			
+			tickets = new ArrayList<RequestTicket>();
+			tickets.addAll(requestTicketService.findByHelperNullAndDraftedFalse());
+			tickets.addAll(requestTicketService.findByHelper(user));
+			Collections.sort(tickets, (t1, t2) -> t1.getDate().compareTo(t2.getDate()));
 		}
 		model.addAttribute("statuses", Status.getIntStringMap());
 		model.addAttribute("tickets", requestTicketService.convertToDtoList(tickets));
@@ -67,7 +72,7 @@ public class MainController {
 	}
 	
 	@GetMapping("ticket/{id}")
-	public String saveTicket(@PathVariable("id") String id, Model model) {
+	public String getTicket(@PathVariable("id") String id, Model model) {
 		model.addAttribute("mainCategories", categoryService.findSubCategories(null));
 		model.addAttribute("statuses", Status.getIntStringMap());
 		if(id.equals("new")) {
@@ -92,16 +97,9 @@ public class MainController {
 	}
 	
 	@PostMapping("ticket/save")
-	public String saveCategory(@ModelAttribute("ticket") RequestTicketDto ticket) {	
+	public String saveTicket(@ModelAttribute("ticket") RequestTicketDto ticket) {	
 		Category category = ticket.getSubCategory() != null ? ticket.getSubCategory() : ticket.getMainCategory();
 		RequestTicket tic;
-		System.out.println(ticket.getId());
-		System.out.println(ticket.getDetails());
-		System.out.println(ticket.isDrafted());
-		System.out.println(ticket.getHelper());
-		System.out.println(ticket.getRequester());
-		System.out.println(ticket.getResponseFromHelper());
-		System.out.println(ticket.getStatus());
 		if(ticket.getId() == null) {
 			tic = new RequestTicket(
 					ticket.getRequester(), ticket.getHelper(), category, 
@@ -110,11 +108,16 @@ public class MainController {
 				);
 		}else {
 			tic = requestTicketService.findById(ticket.getId());
+			if(checkCurrentUserRole("ROLE_HELPER")) {
+				if(ticket.getHelper() == null) {
+					ticket.setHelper(getCurrentUser());
+				}
+			}
 			tic.setCategory(category);
 			tic.setDetails(ticket.getDetails());
 			tic.setDrafted(ticket.isDrafted());
-			tic.setHelper(ticket.getHelper());
 			tic.setRequester(ticket.getRequester());
+			tic.setHelper(ticket.getHelper());
 			tic.setResponseFromHelper(ticket.getResponseFromHelper());
 			tic.setStatus(ticket.getStatus());
 		}

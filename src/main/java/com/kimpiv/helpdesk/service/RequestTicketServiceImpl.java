@@ -52,10 +52,10 @@ public class RequestTicketServiceImpl implements RequestTicketService{
 		return ticketRepository.findByCategory(category);
 	}
 
-	@Override
-	public List<RequestTicket> findByDrafted(boolean isDrafted) {
-		return ticketRepository.findByDrafted(isDrafted);
-	}
+//	@Override
+//	public List<RequestTicket> findByDrafted(boolean isDrafted) {
+//		return ticketRepository.findByDrafted(isDrafted);
+//	}
 
 	@Override
 	public List<RequestTicket> findByStatus(int status) {
@@ -68,7 +68,7 @@ public class RequestTicketServiceImpl implements RequestTicketService{
 				ticket.getId(), ticket.getRequester(), ticket.getHelper(), 
 				ticket.getCategory().getMainCategory(), ticket.getCategory(), 
 				ticket.getDetails(), ticket.getResponseFromHelper(),
-				ticket.isDrafted(), ticket.getStatus());
+				ticket.isDrafted(), ticket.getStatus(), ticket.getDate());
 		if(ticket.getCategory().getMainCategory() == null) {
 			ticketDto.setMainCategory(ticket.getCategory());
 			ticketDto.setSubCategory(null);
@@ -83,6 +83,11 @@ public class RequestTicketServiceImpl implements RequestTicketService{
 			dto.add(convertToDto(t));
 		});
 		return dto;
+	}
+
+	@Override
+	public List<RequestTicket> findByHelperNullAndDraftedFalse() {
+		return ticketRepository.findByHelperNullAndDraftedFalse();
 	}
 
 
