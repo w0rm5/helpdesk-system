@@ -6,6 +6,7 @@
 	<meta charset="UTF-8" />
 	<title>Home</title>
 	<link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<script th:src="@{/js/jquery.min.js}"></script>
 	<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </head>
 
@@ -44,7 +45,7 @@
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-6">
 				<h1>Your Requests</h1>
@@ -65,10 +66,39 @@
 				Request Ticket Draft Saved
 			</div>
 		</div>
+		
+
+		<form id="searchForm" class="row my-2" sec:authorize="hasRole('ROLE_HELPER')">
+			<div class="col-md-4">
+				<div class="row">
+					<label class="col-md-2 col-form-label" for="status">Status</label>
+					<div class="col-md-10">
+						<select class="form-select" id="status" name="status" th:value="${status}">
+							<th:block th:each="status_map : ${statuses}">
+								<option th:each="s : ${status_map}" th:text="${s.value}" th:value="${s.key}"></option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<label class="col-md-2 col-form-label" for="date">Date</label>
+					<div class="col-md-10">
+						<input class="form-control" type="date" id="date" name="date" th:value="${date}" />
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<a class="btn btn-secondary me-2 float-end" th:href="@{/}">Clear</a>
+				<button type="button" class="btn btn-primary me-2 float-end" onclick="searchTickets()" float-end>Search</button>
+			</div>
+		</form>
+
 
 		<div class="row">
 			<div class="col">
-				<table class="table">
+				<table class="table" id="dataTable">
 					<thead>
 						<tr>
 							<th scope="col">ID</th>
@@ -78,6 +108,7 @@
 							<th scope="col">Main Category</th>
 							<th scope="col">Sub Category</th>
 							<th scope="col">Details</th>
+							<th scope="col">Response From Helper</th>
 							<th scope="col">Status</th>
 							<th scope="col">Actions</th>
 						</tr>
@@ -93,6 +124,7 @@
 							<td th:text="${ticket.mainCategory.name}">Main Category</td>
 							<td th:text="${ticket?.subCategory?.name}">Sub Category</td>
 							<td th:text="${ticket.details}">Details</td>
+							<td th:text="${ticket.responseFromHelper}">Response From Helper</td>
 							<td th:text="${statuses.get(ticket.status)}">Status</td>
 							<td>
 								<a class="btn btn-primary" th:href="@{/ticket/{id}(id=${ticket.id})}"
@@ -104,8 +136,39 @@
 				</table>
 			</div>
 		</div>
-
 	</div>
+	<script>
+		function searchTickets() {
+			$.get("/ticket/search/?" + $("#searchForm").serialize(), function (datas) {
+				console.log("data", datas)
+				$("#dataTable tbody").empty();
+				for(data of datas) {
+					$("#dataTable tbody").append(
+						"<tr><th>" +
+							data.id + 
+						"</th><td>" +
+							data.requester.lastName + " " + data.requester.firstName +
+						"</td><td>" +
+							data.date +
+						"</td><td>" +
+							data.mainCategory.name +
+						"</td><td>" +
+							data?.subCategory?.name +
+						"</td><td>" +
+							data.details +
+						"</td><td>" +
+							data.responseFromHelper +
+						"</td><td>" +
+							data.status +
+						"</td><td>" +
+							"<a class='btn btn-primary' href='/ticket/" + data.id +"'>View</a>" +
+						"</td></tr>"
+					);
+				} 
+			})
+		}
+
+	</script>
 </body>
 
 </html>

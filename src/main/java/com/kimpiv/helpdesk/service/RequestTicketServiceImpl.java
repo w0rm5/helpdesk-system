@@ -1,5 +1,6 @@
 package com.kimpiv.helpdesk.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,14 @@ public class RequestTicketServiceImpl implements RequestTicketService{
 	@Override
 	public List<RequestTicket> findByHelperNullAndDraftedFalse() {
 		return ticketRepository.findByHelperNullAndDraftedFalse();
+	}
+
+	@Override
+	public List<RequestTicket> findByHelperAndStatusAndDate(UserInfo helper, int status, LocalDate date) {
+		if(date == null) {
+			return ticketRepository.findByHelperAndStatus(helper, status);
+		}
+		return ticketRepository.findByHelperAndStatusAndDate(helper, status, date);
 	}
 
 

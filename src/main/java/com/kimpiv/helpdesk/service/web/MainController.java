@@ -1,5 +1,6 @@
 package com.kimpiv.helpdesk.service.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kimpiv.helpdesk.model.Category;
 import com.kimpiv.helpdesk.model.RequestTicket;
@@ -123,6 +126,21 @@ public class MainController {
 		}
 		requestTicketService.save(tic);
 		return "redirect:/?" + (tic.isDrafted() ? "drafted" : "saved");
+	}
+	
+	@GetMapping("ticket/search")
+	@ResponseBody
+	public List<RequestTicketDto> searchList(Model model, 
+			@RequestParam(name = "status") int status,
+			@RequestParam(name = "date") String date) {
+		if(date.isBlank()) {
+			return requestTicketService.convertToDtoList(
+					requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, null)
+				);
+		}
+		return requestTicketService.convertToDtoList(
+				requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, LocalDate.parse(date))
+			);
 	}
 
 }

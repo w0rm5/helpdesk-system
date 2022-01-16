@@ -1,5 +1,6 @@
 package com.kimpiv.helpdesk.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.kimpiv.helpdesk.model.Category;
@@ -14,10 +15,9 @@ public interface RequestTicketService {
 	List<RequestTicket> findByRequester(UserInfo requester);
 	List<RequestTicket> findByHelper(UserInfo helper);
 	List<RequestTicket> findByCategory(Category category);
-//	List<RequestTicket> findByDrafted(boolean isDrafted);
 	List<RequestTicket> findByStatus(int status);
-//	List<RequestTicket> findByStatusAndDraftedFalse(int status);
 	List<RequestTicket> findByHelperNullAndDraftedFalse();
+	List<RequestTicket> findByHelperAndStatusAndDate(UserInfo helper, int status, LocalDate date);
 	RequestTicketDto convertToDto(RequestTicket ticket);
 	List<RequestTicketDto> convertToDtoList(List<RequestTicket> tickets);
 }
