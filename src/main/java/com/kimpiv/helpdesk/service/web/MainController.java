@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kimpiv.helpdesk.model.Category;
+import com.kimpiv.helpdesk.model.ExcelLog;
 import com.kimpiv.helpdesk.model.RequestTicket;
 import com.kimpiv.helpdesk.model.Status;
 import com.kimpiv.helpdesk.model.TicketExcelExport;
 import com.kimpiv.helpdesk.model.UserInfo;
 import com.kimpiv.helpdesk.service.CategoryService;
+import com.kimpiv.helpdesk.service.ExcelLogService;
 import com.kimpiv.helpdesk.service.RequestTicketService;
 import com.kimpiv.helpdesk.service.UserService;
 import com.kimpiv.helpdesk.service.web.dto.RequestTicketDto;
@@ -40,13 +42,15 @@ public class MainController {
 	private final RequestTicketService requestTicketService;
 	private final UserService userService;
 	private final CategoryService categoryService;
+	private final ExcelLogService excelLogService;
 
 	public MainController(RequestTicketService requestTicketService, UserService userService,
-			CategoryService categoryService) {
+			CategoryService categoryService, ExcelLogService excelLogService) {
 		super();
 		this.requestTicketService = requestTicketService;
 		this.userService = userService;
 		this.categoryService = categoryService;
+		this.excelLogService = excelLogService;
 	}
 
 	@GetMapping("/login")
@@ -156,20 +160,30 @@ public class MainController {
 			@RequestParam(name = "date") String date) throws IOException {
 		
 		response.setContentType("application/octet-stream");
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
         List<RequestTicket> ticketList;
+        String queryString;
         if(date.isBlank()) {
         	ticketList = requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, null);
+        	queryString = "status = "+ Status.fromInt(status).name();
         } else {
         	ticketList = requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, LocalDate.parse(date));
+        	queryString = "status = "+ Status.fromInt(status).name() + ", date = " + date;
         }
+        excelLogService.save(new ExcelLog(getCurrentUser(), currentDateTime, queryString));
         TicketExcelExport exporter = new TicketExcelExport(ticketList);
         exporter.export(response);
 	}
 
+	@GetMapping("/ticket/export/log")
+	public String getExportLog(Model model) {
+		List<ExcelLog> logs = excelLogService.getLogsByExporter(getCurrentUser());
+		model.addAttribute("logs", logs);
+		return "export_logs";
+	}
 }

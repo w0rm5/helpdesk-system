@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Categories</title>
+	<title>Excel Export List</title>
 	<link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 	<script th:src="@{/js/bootstrap.bundle.js}"></script>
 </head>
@@ -23,13 +23,13 @@
 						<a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/ticket/export/log}" sec:authorize="hasRole('ROLE_HELPER')">Excel Export Logs</a>
+						<a class="nav-link active" th:href="@{/ticket/export/log}" sec:authorize="hasRole('ROLE_HELPER')">Excel Export Logs</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/user}" sec:authorize="hasRole('ROLE_ADMIN')">User List</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" th:href="@{/category}" sec:authorize="hasRole('ROLE_ADMIN')">Categories</a>
+						<a class="nav-link" th:href="@{/category}" sec:authorize="hasRole('ROLE_ADMIN')">Categories</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav">
@@ -50,15 +50,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<h1>Categories List</h1>
-			</div>
-			<div class="col-md-6 d-flex align-items-md-end">
-				<a class="btn btn-primary ms-auto" th:href="@{/category/new}">New Category</a>
-			</div>
-		</div>
-		<div th:if="${param.saved}" class="row">
-			<div class="col alert alert-info mt-2">
-				Category saved
+				<h1>Excel Export List</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -67,20 +59,15 @@
 					<thead>
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Name</th>
-							<th scope="col">Type</th>
-							<th scope="col">Child of</th>
-							<th scope="col">Actions</th>
+							<th scope="col">Exported Date Time</th>
+							<th scope="col">Query</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="category : ${mainCategories}">
-							<th th:text="${category.id}" scope="row">1</th>
-							<td th:text="${category.name}">Name</td>
-							<td th:text="${category.mainCategory == null ? 'Main Category' : 'Sub Category'}">Main</td>
-							<td th:text="${category.mainCategory == null ? '' : category.mainCategory.name}">Sub</td>
-							<td> <a class="btn btn-primary" th:href="@{/category/{id}(id=${category.id})}">Edit</a>
-							</td>
+						<tr th:each="log : ${logs}">
+							<th th:text="${log.id}" scope="row">ID</th>
+							<td th:text="${log.dateTime}">Exported Date Time</td>
+							<td th:text="${log.query}">Query</td>
 						</tr>
 					</tbody>
 				</table>

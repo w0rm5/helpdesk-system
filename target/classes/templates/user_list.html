@@ -23,7 +23,10 @@
 						<a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/user}" sec:authorize="hasRole('ROLE_ADMIN')">User List</a>
+						<a class="nav-link" th:href="@{/ticket/export/log}" sec:authorize="hasRole('ROLE_HELPER')">Excel Export Logs</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" th:href="@{/user}" sec:authorize="hasRole('ROLE_ADMIN')">User List</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/category}" sec:authorize="hasRole('ROLE_ADMIN')">Categories</a>
@@ -53,7 +56,17 @@
 		</div>
 		<div th:if="${param.userupdate}" class="row">
 			<div class="col alert alert-info mt-2">
-				Role changed
+				User updated
+			</div>
+		</div>
+		<div th:if="${param.banned}" class="row">
+			<div class="col alert alert-danger mt-2">
+				User banned
+			</div>
+		</div>
+		<div th:if="${param.unbanned}" class="row">
+			<div class="col alert alert-success mt-2">
+				User unbanned
 			</div>
 		</div>
 		<table class="table">
@@ -98,6 +111,10 @@
 							th:if="${user.roles.?[name == 'ROLE_ADMIN'].isEmpty()}">Add admin role</a>
 						<a class="btn btn-danger btn-sm mb-1" th:href="@{/user/remove-admin-role/{id}(id=${user.id})}" 
 							th:if="${not user.roles.?[name == 'ROLE_ADMIN'].isEmpty()}">Remove admin role</a>
+						<a class="btn btn-danger btn-sm mb-1" th:href="@{/user/unban/{id}(id=${user.id})}" 
+							th:if="${user.banned}">Unban user</a>
+						<a class="btn btn-danger btn-sm mb-1" th:href="@{/user/ban/{id}(id=${user.id})}" 
+							th:unless="${user.banned}">Ban user</a>
 					</td>
 				</tr>
 			</tbody>

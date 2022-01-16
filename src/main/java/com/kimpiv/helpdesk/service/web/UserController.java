@@ -64,7 +64,15 @@ public class UserController {
 		UserInfo user = userService.getUserById(id);
 		user.setBanned(true);
 		userService.saveUser(user);
-		return "redirect:/user?rolechange";
+		return "redirect:/user?banned";
+	}
+	
+	@GetMapping("unban/{id}")
+	public String unbanUser(@PathVariable("id") Long id) {
+		UserInfo user = userService.getUserById(id);
+		user.setBanned(false);
+		userService.saveUser(user);
+		return "redirect:/user?unbanned";
 	}
 	
 	@GetMapping("{id}")
