@@ -1,9 +1,15 @@
 package com.kimpiv.helpdesk.service.web;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kimpiv.helpdesk.model.Category;
 import com.kimpiv.helpdesk.model.RequestTicket;
 import com.kimpiv.helpdesk.model.Status;
+import com.kimpiv.helpdesk.model.TicketExcelExport;
 import com.kimpiv.helpdesk.model.UserInfo;
 import com.kimpiv.helpdesk.service.CategoryService;
 import com.kimpiv.helpdesk.service.RequestTicketService;
@@ -141,6 +148,28 @@ public class MainController {
 		return requestTicketService.convertToDtoList(
 				requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, LocalDate.parse(date))
 			);
+	}
+	
+	@GetMapping("/ticket/export/excel")
+	public void exportToExcel(HttpServletResponse response, 
+			@RequestParam(name = "status") int status,
+			@RequestParam(name = "date") String date) throws IOException {
+		
+		response.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        List<RequestTicket> ticketList;
+        if(date.isBlank()) {
+        	ticketList = requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, null);
+        } else {
+        	ticketList = requestTicketService.findByHelperAndStatusAndDate(getCurrentUser(), status, LocalDate.parse(date));
+        }
+        TicketExcelExport exporter = new TicketExcelExport(ticketList);
+        exporter.export(response);
 	}
 
 }

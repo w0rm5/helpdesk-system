@@ -92,6 +92,7 @@
 			<div class="col-md-4">
 				<a class="btn btn-secondary me-2 float-end" th:href="@{/}">Clear</a>
 				<button type="button" class="btn btn-primary me-2 float-end" onclick="searchTickets()" float-end>Search</button>
+				<button type="button" class="btn btn-primary me-2 float-end" onclick="exportTickets()" float-end>Export</button>
 			</div>
 		</form>
 
@@ -166,6 +167,10 @@
 					);
 				} 
 			})
+		}
+		
+		function exportTickets() {
+			window.open("/ticket/export/excel/?" + $("#searchForm").serialize())
 		}
 
 	</script>
