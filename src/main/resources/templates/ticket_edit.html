@@ -90,10 +90,10 @@
 				<textarea heigth="50" class="form-control" id="details" name="details" th:field="*{details}" 
 					th:readonly="${#authorization.expression('hasRole(''ROLE_HELPER'')')}" required></textarea>
 			</div>
-			<div class="col-12 mb-2" th:if="${ticket.id != null}">
+			<div class="col-12 mb-2" sec:authorize="hasRole('ROLE_HELPER')">
 				<label class="form-label" for="responseFromHelper">Response from helper</label>
 				<textarea class="form-control" id="responseFromHelper" name="responseFromHelper"
-					th:field="*{responseFromHelper}" th:readonly="${#authorization.expression('hasRole(''ROLE_USER'')')}"></textarea>
+					th:field="*{responseFromHelper}"></textarea>
 			</div>
 			<div class="col-12 mb-2" sec:authorize="hasRole('ROLE_USER')">
 				<div class="form-check">
